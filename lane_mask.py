@@ -27,7 +27,7 @@ print(xsize)
 # But you'll get a chance to play with them soon in a quiz 
 left_bottom = [0, ysize]
 right_bottom = [xsize, ysize]
-apex = [400, 300]
+apex = [460, 320]
 
 # Fit lines (y=Ax+B) to identify the  3 sided region of interest
 # np.polyfit() returns the coefficients [A, B] of the fit
@@ -42,7 +42,7 @@ region_thresholds = (YY > (XX*fit_left[0] + fit_left[1])) & \
                     (YY < (XX*fit_bottom[0] + fit_bottom[1]))
 
 # Color pixels red which are inside the region of interest
-region_select[region_thresholds] = [255, 0, 0]
+region_select[~region_thresholds] = [255, 0, 0]
 
 # Display the image
 plt.imshow(region_select)
