@@ -31,4 +31,4 @@ edges = cv2.Canny(gray, low_threshold, high_threshold)
 # Display the image
 fig3 = plt.figure()
 plt.imshow(edges, cmap='Greys_r')
-plt.savefig('exit-ramp_det.png')
+plt.savefig('exit-ramp_canny.png')

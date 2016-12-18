@@ -10,7 +10,7 @@ import matplotlib.image as mpimg
 import numpy as np
 
 # Read in the image and print some stats
-image = mpimg.imread('test.jpg')
+image = mpimg.imread('exit-ramp.jpg')
 print('This image is: ', type(image), 
          'with dimesions:', image.shape)
 
@@ -19,16 +19,16 @@ ysize = image.shape[0]
 xsize = image.shape[1]
 region_select = np.copy(image)
 
-print(xsize)
-
 # Define a triangle region of interest 
 # Keep in mind the origin (x=0, y=0) is in the upper left in image processing
 # Note: if you run this code, you'll find these are not sensible values!!
 # But you'll get a chance to play with them soon in a quiz 
+# a= 10.0 # drivers eccentricity from the center of the lane
+margin = 80.0
 left_bottom = [0, ysize]
 right_bottom = [xsize, ysize]
-right_top = [500,320]
-left_top = [420,320]
+right_top = [xsize/2+margin,320]
+left_top = [xsize/2-margin,320]
 
 # apex = [460, 320]
 
@@ -47,7 +47,7 @@ region_thresholds = (YY > (XX*fit_top[0] + fit_top[1])) & \
                     (YY < (XX*fit_bottom[0] + fit_bottom[1]))
 
 # Color pixels red which are inside the region of interest
-region_select[~region_thresholds] = [255, 0, 0]
+region_select[~region_thresholds] = [0, 0, 0]
 
 # Display the image
 plt.imshow(region_select)

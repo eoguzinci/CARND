@@ -5,3 +5,54 @@ Created on Sun Dec 18 03:44:06 2016
 @author: oguzi
 """
 
+# Do relevant imports
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import numpy as np
+import cv2
+
+# Read in and grayscale the image
+image = mpimg.imread('exit-ramp.jpg')
+gray = cv2.cvtColor(image,cv2.COLOR_RGB2GRAY)
+
+# Define a kernel size and apply Gaussian smoothing
+kernel_size = 5
+blur_gray = cv2.GaussianBlur(gray,(kernel_size, kernel_size),0)
+
+# Define our parameters for Canny and apply
+low_threshold = 50
+high_threshold = 150
+edges = cv2.Canny(blur_gray, low_threshold, high_threshold)
+
+fig3 = plt.figure()
+plt.imshow(edges, cmap='Greys_r')
+
+# Define the Hough transform parameters
+# Make a blank the same size as our image to draw on
+rho = 1 # distance resolution of Hough Space
+theta = np.pi/180 # angular resolution of Hough Space
+threshold = 1 # minimum number of intersections in a grid cell in Hough Space
+min_line_length = 10 # min length of a line
+max_line_gap = 1 # max distance between segments(in pixels) that forms a single line
+line_image = np.copy(image)*0 # creating a blank image in the same size with initial image to draw lines on
+
+# Run Hough on edge detected image
+lines = cv2.HoughLinesP(edges, rho, theta, threshold, np.array([]),
+                            min_line_length, max_line_gap)
+
+# Iterate over the output "lines" and draw lines on the blank
+for line in lines:
+    for x1,y1,x2,y2 in line:
+        cv2.line(line_image,(x1,y1),(x2,y2),(255,0,0),10)
+
+fig1 = plt.figure()
+plt.imshow(line_image)
+        
+# Create a "color" binary image to combine with line image
+color_edges = np.dstack((edges, edges, edges))
+
+# Draw the lines on the edge image
+fig2 = plt.figure()
+combo = cv2.addWeighted(color_edges, 0.8, line_image, 1, 0) 
+plt.imshow(combo)
+plt.savefig('exit-ramp_hough.png')

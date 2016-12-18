@@ -44,4 +44,24 @@ Then Canny edge detector needs 2 parameters:
 
 The pixels with lower RGB values than the low threshold will be rejected. The pixels with higher RGB
 
-`$$ x+y=z $$`
+## HOMEWORK Notes - Lane Detection from the image
+
+### __Reference Solution__: 
+
+#### Canny edge detection: 
+low_threshold : 50
+high_threshold : 150
+
+#### Region selection : 
+`vertices = np.array([[(0,imshape[0]),(450, 290), (490, 290), (imshape[1],imshape[0])]], dtype=np.int32)`
+
+#### Parameters for Hough space: 
+##### Grid parameters
+    `rho = 2` (pixels)
+    `theta = np.pi/180` (in radians = 1 degree)
+    `threshold = 15`  (meaning at least 15 points in image space need to be associated with each line segment)
+    `min_line_length = 40` (pixels)
+    `max_line_gap = 20` (pixels).
+
+With these parameters, I'm picking up the lanes lines and nothing else, so looks like a decent solution!
+
