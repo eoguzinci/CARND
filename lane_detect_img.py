@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
 import cv2
+from numpy import linalg as LA
 
 # Read in and grayscale the image
 image = mpimg.imread('exit-ramp.jpg')
@@ -68,13 +69,14 @@ theta = 1*np.pi/180 # angular resolution of Hough Space
 threshold = 20 # minimum number of intersections in a grid cell in Hough Space
 min_line_length = 60 # min length of a line
 max_line_gap = 10 # max distance between segments(in pixels) that forms a single line
-line_image = np.copy(image)*0 # creating a blank image in the same size with initial image to draw lines on
 
 # Run Hough on edge detected image
 lines = cv2.HoughLinesP(region_select, rho, theta, threshold, np.array([]),
                             min_line_length, max_line_gap)
+# length_lines = LA.norm(lines[0][0][2]-lines[0][0][0],lines[0][0][3]-lines[0][0][1])
 
 # Iterate over the output "lines" and draw lines on the blank
+line_image = np.copy(image)*0 # creating a blank image in the same size with initial image to draw lines on
 for line in lines:
     for x1,y1,x2,y2 in line:
         cv2.line(line_image,(x1,y1),(x2,y2),(255,0,0),10)
